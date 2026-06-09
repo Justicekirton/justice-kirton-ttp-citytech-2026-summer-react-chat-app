@@ -1,22 +1,11 @@
 import {useState} from 'react';
 // @ts-expect-error
 import Message from './components/Message';
+import { faker } from "@faker-js/faker";
 // @ts-expect-error
 import './App.css';
 
 const App = () => {
-    //
-    // business logic
-    //
-
-    /*
-    const messages = [
-        "Argentina",
-        "Bolivia",
-        "Cambodia",
-    ];
-    */
-
     const [messages, setMessages] = useState([]);
 
     return <>
@@ -26,7 +15,13 @@ const App = () => {
 
         {
             messages.map(
-                (text, index) => <Message key={index} text={text} />
+                ({text, name, timestamp}, index) =>
+                    <Message
+                        key={index}
+                        text={text}
+                        name={name}
+                        timestamp={timestamp}
+                    />
                 )
         }
 
@@ -36,18 +31,28 @@ const App = () => {
             // determine what the new message is
             const new_message = event.target.incoming_text.value;
 
+            // generate a fake name for this particular message
+            const name = faker.person.fullName();
+
             // add the new message to the message state
             // @ts-expect-error
-            setMessages([...messages, new_message]);
+            setMessages([...messages,
+            // @ts-expect-error
+                {
+                    text: new_message,
+                    name: name,
+                    timestamp: new Date()
+                }
+            ]);
 
             // note: this is not best practice in react but it works for now
             // @ts-expect-error
             document.getElementById('incoming_text').value = '';
         }}>
-        <input name='incoming_text' id='incoming_text' />
-        <button type='submit'>
-            send
-        </button>
+            <input name='incoming_text' id='incoming_text' />
+            <button type='submit'>
+                send
+            </button>
         </form>
     </>;
 }

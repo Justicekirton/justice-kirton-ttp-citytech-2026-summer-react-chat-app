@@ -1,14 +1,11 @@
-import { faker } from "@faker-js/faker";
 
 // @ts-expect-error
-const Message = ({text}) => {
-
-    // BUG: the name regenerates on every new message. old messages should retain their name
-    const name = faker.person.fullName();
-
+const Message = ({text, name, timestamp}) => {
     return <>
       <p className='message'>
-        {text} - {name}
+        {text}
+        <br />
+        {name} - {timestamp.toString()}
       </p>
     </>;
 }
